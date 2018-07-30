@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
-import App from '../components/App'
+import App from '../components/App';
 import { itemsFetchData } from '../actions/actionscreator';
 
 const mapStateToProps = (state) => {
 
     return {
-        
+        locations: state.locations,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: (url, item, sort) => dispatch(itemsFetchData(url)),
+        fetchData: (url) => dispatch(itemsFetchData(url)),
     };
 };
 

@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import Map from '../Map'
-import logo from '../../logo.svg';
+import { GoogleApiWrapper } from 'google-maps-react'
+import Map from '../Map';
+import Nav from '../Nav'
 import './styles.css';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchData('https://api.foursquare.com/v2/venues/search?client_id=KNIQKWBGUBOVCXEKF4IIU3ADQOCGLHR41JSVMAHUSGAE5E12&client_secret=YGR34AOSTKU1PJ0V11LSYETJLFKSZY2RB2UDLIQ4DF420R5W&ll=53.2294757,50.2095969&v=20180323')
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">My neighborhood map</h1>
-        </header>
-
-        <Map
-          isMarkerShown
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiUqVLqagpRsToEy_hX6Vv9NmTYX22_fs&v=3.exp&libraries=geometry,drawing,places"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-        />
+      <div>
+        <Nav />
+        <Map google={this.props.google} />
       </div>
     );
   }
 }
 
-export default App;
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyDiUqVLqagpRsToEy_hX6Vv9NmTYX22_fs'
+})(App)
