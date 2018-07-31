@@ -7,6 +7,7 @@ const Nav = () => {
             <h1 className="App-title">My neighborhood map</h1>
             <input type="text" placeholder="Search"></input>
             <button>Search</button>
+            
         </nav>
     );
 }

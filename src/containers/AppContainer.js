@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
 import App from '../components/App';
-import { itemsFetchData } from '../actions/actionscreator';
+import { itemsFetchData, addToMarkers } from '../actions/actionscreator';
 
 const mapStateToProps = (state) => {
-
     return {
         locations: state.locations,
+        markers: state.allMarkers,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchData: (url) => dispatch(itemsFetchData(url)),
+        addMarkers: (marker) => dispatch(addToMarkers(marker)),
     };
 };
 

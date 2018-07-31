@@ -1,6 +1,7 @@
 export const ITEMS_HAS_ERRORED = 'ITEMS_HAS_ERRORED';
 export const ITEMS_IS_LOADING = 'ITEMS_IS_LOADING';
 export const ITEMS_FETCH_DATA_SUCCESS = 'ITEMS_FETCH_DATA_SUCCESS';
+export const ADD_MARKER = 'ADD_MARKER';
 
 export function itemsHasErrored(bool) {
     return {
@@ -23,7 +24,7 @@ export function itemsFetchDataSuccess(items) {
     };
 }
 
-
+//fetch data from the api
 export function itemsFetchData(url) {
     return (dispatch) => {
         dispatch(itemsIsLoading(true));
@@ -41,5 +42,19 @@ export function itemsFetchData(url) {
             .then((response) => response.json())
             .then((items) => dispatch(itemsFetchDataSuccess(items)))
             .catch(() => dispatch(itemsHasErrored(true)));
+    };
+}
+
+//Markers
+export function markers(marker) {
+    return {
+        type: ADD_MARKER,
+        marker
+    };
+}
+
+export function addToMarkers(marker) {
+    return (dispatch) => {
+        dispatch(markers(marker))
     };
 }

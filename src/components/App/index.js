@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div>
         <Nav />
-        <Map google={this.props.google} />
+        <Map google={this.props.google} {...this.props}/>
       </div>
     );
   }

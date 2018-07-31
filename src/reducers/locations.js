@@ -1,4 +1,8 @@
-import {ITEMS_HAS_ERRORED, ITEMS_IS_LOADING, ITEMS_FETCH_DATA_SUCCESS } from '../actions/actionscreator'
+import {
+    ITEMS_HAS_ERRORED, 
+    ITEMS_IS_LOADING, 
+    ITEMS_FETCH_DATA_SUCCESS, 
+    ADD_MARKER } from '../actions/actionscreator'
 
 export function itemsHasErrored(state = false, action) {
     switch (action.type) {
@@ -29,3 +33,13 @@ export function locations (state = [], action) {
             return state;
     }
 }
+
+export function allMarkers(state = [], action) {
+    switch (action.type) {
+        case ADD_MARKER: 
+            return [...state, action.marker];
+        default:
+            return state;
+    }
+}
+
