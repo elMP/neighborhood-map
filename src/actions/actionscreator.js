@@ -2,6 +2,7 @@ export const ITEMS_HAS_ERRORED = 'ITEMS_HAS_ERRORED';
 export const ITEMS_IS_LOADING = 'ITEMS_IS_LOADING';
 export const ITEMS_FETCH_DATA_SUCCESS = 'ITEMS_FETCH_DATA_SUCCESS';
 export const ADD_MARKER = 'ADD_MARKER';
+export const OPEN_INFO_WINDOW = 'OPEN_INFO_WINDOW';
 
 export function itemsHasErrored(bool) {
     return {
@@ -56,5 +57,19 @@ export function markers(marker) {
 export function addToMarkers(marker) {
     return (dispatch) => {
         dispatch(markers(marker))
+    };
+}
+
+//InfoWindow
+export function infoWindow(infoId) {
+    return {
+        type: OPEN_INFO_WINDOW,
+        infoId
+    };
+}
+
+export function openInfoWindow(i) {
+    return (dispatch) => {
+        dispatch(infoWindow(i))
     };
 }

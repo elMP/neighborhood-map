@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleApiWrapper } from 'google-maps-react'
 import Map from '../Map';
-import Nav from '../Nav'
 import './styles.css';
 
 class App extends Component {
@@ -11,8 +10,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Nav />
-        <Map google={this.props.google} {...this.props}/>
+        <Map google={this.props.google} {...this.props} />
       </div>
     );
   }

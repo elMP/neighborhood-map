@@ -39,6 +39,7 @@ class Map extends Component {
 
   infoWindow = new this.props.google.maps.InfoWindow();
   chosenIcon = this.makeMarkerIcon('0072ff');
+  markers = [];
 
   addMarkers = () => {
     const LatLngBounds = new this.props.google.maps.LatLngBounds()
@@ -51,12 +52,20 @@ class Map extends Component {
         title: location.name,
         address: location.location.address,
         categories: location.categories,
+        id: location.id,
       })
 
+
+      this.markers.push(marker); //I tried to put it in state, but redux extention would freeze whenever i tried to search for index in populateInfoWindow() function
+
       marker.addListener('click', () => {
-        this.populateInfoWindow(marker, this.infoWindow)
+
+        this.populateInfoWindow(marker, this.infoWindow);
+        // console.log('im clicking on ', marker.id)
+        this.props.openInfoWindow(marker.id)
+
       })
-      this.props.addMarkers(marker) //this came from redux reducer
+      // this.props.addMarkers(marker) //this came from redux reducer
       LatLngBounds.extend(marker.position)
     })
     this.map.fitBounds(LatLngBounds)
@@ -66,8 +75,14 @@ class Map extends Component {
     if (infowindow.marker !== marker) {
       // resets the old marker
       if (infowindow.marker) {
-        const index = this.props.markers.findIndex(m => m.title === infowindow.marker.title)
-        this.props.markers[index].setIcon(marker.getIcon())
+
+        const index = this.markers.findIndex(m => m.id === this.props.infoWindow)
+        this.markers[index].setIcon(marker.getIcon())
+
+        //uncomment line 68 first to use this approach, and comment the line 59
+        // const index = this.props.markers.findIndex(m => m.id === infowindow.marker.id)
+        // this.props.markers[index].setIcon(marker.getIcon())
+
       }
 
       marker.setIcon(this.chosenIcon)
@@ -80,11 +95,17 @@ class Map extends Component {
             </i>
           `)
       infowindow.open(this.map, marker)
+
+      const infoWindow = this.props.openInfoWindow;
       // Clears the old info window
       infowindow.addListener('closeclick', function () {
+
+        infoWindow('')
         infowindow.marker = null;
         marker.setIcon(this.chosenIcon);
       })
+
+
     }
   }
 
@@ -93,6 +114,15 @@ class Map extends Component {
   render() {
     return (
       <div>
+        <nav className="App-header">
+          <h1 className="App-title">My neighborhood map</h1>
+          <input type="text" placeholder="Search"></input>
+          <button>Search</button>
+          <ul>
+            {this.props.locations.length > 0 && this.props.locations.map(l =>
+              <li key={l.id}>{l.name}</li>)}
+          </ul>
+        </nav>
         <div className="map-container">
           <div role="application" className="map" ref="map">
             loading map...
