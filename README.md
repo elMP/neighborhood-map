@@ -3,7 +3,7 @@ _A single page application featuring a map of my neighborhood._
 
 #### API used:
 * Google maps
-* Foursquare
+* Foursquare (provides all the data)
 
 #### Technology used:
 * React

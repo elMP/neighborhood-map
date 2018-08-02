@@ -85,9 +85,10 @@ class Map extends Component {
       infowindow.setContent(`
             <h3>${marker.title}</h3>
             <h4>Address: ${marker.address}</h4>
-            <i>Categor${marker.categories.length === 1 ? 'y' : 'ies'}: 
+            <div><i>Categor${marker.categories.length === 1 ? 'y' : 'ies'}: 
             ${marker.categories.map(category => category.name)}
-            </i>
+            </i></div>
+            <div style="text-align:right">Data was provided by <a href="https://foursquare.com/" target="_blank">Foursquare</a></div>
           `)
       infowindow.open(this.map, marker)
 
