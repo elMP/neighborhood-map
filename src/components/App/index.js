@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleApiWrapper } from 'google-maps-react'
 import Map from '../Map';
-import './styles.css';
 
 class App extends Component {
   componentDidMount() {

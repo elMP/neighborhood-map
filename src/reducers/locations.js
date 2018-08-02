@@ -3,7 +3,7 @@ import {
     ITEMS_IS_LOADING,
     ITEMS_FETCH_DATA_SUCCESS,
     ADD_MARKER,
-    OPEN_INFO_WINDOW
+    OPEN_INFO_WINDOW, 
 } from '../actions/actionscreator'
 
 export function itemsHasErrored(state = false, action) {
@@ -36,7 +36,7 @@ export function locations(state = [], action) {
     }
 }
 
-export function allMarkers(state = [], action) {
+export function markers(state = [], action) {
     switch (action.type) {
         case ADD_MARKER:
             return [...state, action.marker];
@@ -55,4 +55,5 @@ export function infoWindow(state = '', action) {
             return state;
     }
 }
+
 

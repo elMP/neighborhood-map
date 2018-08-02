@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import './styles.css';
 
 class Map extends Component {
+  state = { query: '' };
   componentDidMount = () => {
     this.loadMap();
     this.addMarkers();
+    this.onclickLocation();
   }
   componentDidUpdate = (prevProps) => {
     if (this.props.locations !== prevProps.locations) {
@@ -39,8 +41,7 @@ class Map extends Component {
 
   infoWindow = new this.props.google.maps.InfoWindow();
   chosenIcon = this.makeMarkerIcon('0072ff');
-  markers = [];
-
+ 
   addMarkers = () => {
     const LatLngBounds = new this.props.google.maps.LatLngBounds()
 
@@ -56,7 +57,7 @@ class Map extends Component {
       })
 
 
-      this.markers.push(marker); //I tried to put it in state, but redux extention would freeze whenever i tried to search for index in populateInfoWindow() function
+      // this.markers.push(marker); //I tried to put it in state, but redux extention would freeze whenever i tried to search for index in populateInfoWindow() function
 
       marker.addListener('click', () => {
 
@@ -65,21 +66,23 @@ class Map extends Component {
         this.props.openInfoWindow(marker.id)
 
       })
-      // this.props.addMarkers(marker) //this came from redux reducer
+      this.props.addMarkers(marker) //this came from redux reducer
       LatLngBounds.extend(marker.position)
     })
     this.map.fitBounds(LatLngBounds)
   }
 
   populateInfoWindow = (marker, infowindow) => {
+
     if (infowindow.marker !== marker) {
       // resets the old marker
       if (infowindow.marker) {
 
-        const index = this.markers.findIndex(m => m.id === this.props.infoWindow)
-        this.markers[index].setIcon(marker.getIcon())
+        const index = this.props.markers.findIndex(m => m.id === this.props.infoWindow)
 
-        //uncomment line 68 first to use this approach, and comment the line 59
+        this.props.markers[index].setIcon(marker.getIcon())
+
+        //uncomment line 70 first to use this approach, and comment the line 61
         // const index = this.props.markers.findIndex(m => m.id === infowindow.marker.id)
         // this.props.markers[index].setIcon(marker.getIcon())
 
@@ -108,21 +111,89 @@ class Map extends Component {
 
     }
   }
+  // Opens info window for items from the list 
+  onclickLocation = () => {
+
+    const infowindow = this.infoWindow
+    const openInfoWindow = this.props.openInfoWindow;
+
+    const displayInfowindow = (e) => {
+
+     // const markers = this.props.markers
+      const markerInd =
+      this.props.markers.findIndex(m => m.title.toLowerCase() === e.target.innerText.toLowerCase());
+
+      if (infowindow.marker) {
+        const index = this.props.markers.findIndex(m => m.id === this.props.infoWindow)
+        this.props.markers[index].setIcon(this.props.markers[markerInd].getIcon());
+        //  this.markers[index].setVisible(true)
+      }
+     // openInfoWindow(this.markers[markerInd].id);
+      openInfoWindow(this.props.markers[markerInd].id);
+      this.populateInfoWindow(this.props.markers[markerInd], infowindow)
+    }
 
 
+    document.querySelector('.locations').addEventListener('click', function (e) {
+      if (e.target && e.target.nodeName === "LI") {
+        displayInfowindow(e)
+      }
+    })
+  }
+
+  // Handles input in react state
+  handleValueChange = (e) => {
+    this.setState({ query: e.target.value })
+    
+  }
+
+  showMenu = () => {
+    document.querySelector('.nav__menu-icon').classList.toggle('open');
+  }
 
   render() {
+
+    if (this.props.locations) {
+      if (this.state.query) {
+ 
+        this.props.locations.forEach((l, i) => {
+
+          if (l.name.toLowerCase().includes(this.state.query.toLowerCase())) {
+            this.props.markers[i].setVisible(true)
+          } else {
+            if (this.infoWindow.marker === this.props.markers[i]) {
+              this.infoWindow.close()
+            }
+            this.props.markers[i].setVisible(false);
+          }
+        })
+      } else {
+        this.props.locations.forEach((l, i) => {
+          if (this.props.markers.length > 0 && this.props.markers[i]) {
+            this.props.markers[i].setVisible(true);
+          }
+        })
+      }
+    }
+
+
     return (
       <div>
-        <nav className="App-header">
-          <h1 className="App-title">My neighborhood map</h1>
-          <input type="text" placeholder="Search"></input>
-          <button>Search</button>
-          <ul>
-            {this.props.locations.length > 0 && this.props.locations.map(l =>
-              <li key={l.id}>{l.name}</li>)}
-          </ul>
+        <nav className="nav">
+          <div className="nav__menu-icon" onClick={() => this.showMenu()}><span></span></div>
+          <h1 className="nav__title">My neighborhood map</h1>
         </nav>
+
+        <div>
+          <input type="text" value={this.state.query} onChange={this.handleValueChange} placeholder="Filter"/>
+          <ul className="locations">
+            {this.props.markers.length > 0 &&
+              this.props.markers.filter(m => m.getVisible()).map((m, i) =>
+                (<li key={i}>{m.title}</li>))
+            }
+          </ul>
+        </div>
+
         <div className="map-container">
           <div role="application" className="map" ref="map">
             loading map...

@@ -1,9 +1,104 @@
-.map {
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  background-color: #222;
+  padding: 10px;
+  color: white;
+  &__title {
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 1.5em;
+  }
+  
+// Menu hamburger styles
+&__menu-icon {
+  z-index: 10;
+  width: 40px;
+  height: 10px;
+  position: relative;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  }
+
+  &__menu-icon span {
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+  }
+  &__menu-icon span::before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+  }
+  &__menu-icon span::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+  }
+
+// Menu toggle styles
+&__menu-icon span {
+  top: 0px;
+  transform-origin: left center;
+}
+
+&__menu-icon span::before {
+  top: -10px;
+  transform-origin: left center;
+}
+
+&__menu-icon span::after {
+  top: 10px;
+  transform-origin: left center;
+}
+
+&__menu-icon.open span {
+  transform: rotate(45deg);
+  top: -14px;
+  left: 10px;
+}
+
+&__menu-icon.open span::before {
+  width: 0%;
+  opacity: 0;
+}
+
+&__menu-icon.open span::after {
+  transform: rotate(-90deg);
+  top: 20px;
+  left: 20px;
+}
+}
+
+  
+
+  .map {
     margin: 0;
     width: 100%;
     height: 100vh;
   }
-
-  li {
-    color: white;
-}

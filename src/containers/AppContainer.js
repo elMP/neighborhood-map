@@ -6,7 +6,7 @@ const mapStateToProps = (state) => {
    
     return {
         locations: state.locations,
-        markers: state.allMarkers,
+        markers: state.markers,
         infoWindow: state.infoWindow,
     };
 };

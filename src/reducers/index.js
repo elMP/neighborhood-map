@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { locations, itemsHasErrored, itemsIsLoading, allMarkers, infoWindow } from './locations';
+import { locations, itemsHasErrored, itemsIsLoading, markers, infoWindow } from './locations';
 
 export default combineReducers({
     locations,
-    allMarkers,
+    markers,
     infoWindow,
     itemsHasErrored,
     itemsIsLoading
