@@ -20,6 +20,8 @@ _A single page application featuring a map of my neighborhood._
   * using yarn
   ```$ yarn ```
   ```$ yarn start ```
+  
+Navigate to http://localhost:3000/ or wait untill browser opens the page itself.
 
 * Production:
   * using npm
@@ -28,8 +30,10 @@ _A single page application featuring a map of my neighborhood._
   * using yarn
   ```$ yarn ```
   ```$ yarn build ```
+  
+Run ```$ yarn global add serve```, then ```$ serve``` and open http://localhost:5000/ to view the production build.
    
   
-Navigate to http://localhost:3000/ or wait untill browser opens the page itself
+
 
 In **production build** it includes a service worker so that the app loads from local cache on future visits.
