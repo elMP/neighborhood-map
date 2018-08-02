@@ -21,3 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 *.css
+
+package-lock.json
+
+yarn.lock
