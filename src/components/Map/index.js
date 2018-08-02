@@ -10,6 +10,7 @@ class Map extends Component {
     this.onclickLocation();
   }
   componentDidUpdate = (prevProps) => {
+    //when component recieves locations, it updates
     if (this.props.locations !== prevProps.locations) {
       this.addMarkers();
     }
@@ -27,7 +28,7 @@ class Map extends Component {
     }
 
   }
-  /////////// Markers//////////////////
+  // Creates marker icon
   makeMarkerIcon = (color) => {
     let markerImg = new this.props.google.maps.MarkerImage(
       'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + color +
@@ -40,8 +41,10 @@ class Map extends Component {
   }
 
   infoWindow = new this.props.google.maps.InfoWindow();
-  chosenIcon = this.makeMarkerIcon('0072ff');
 
+  chosenIcon = this.makeMarkerIcon('0072ff');  //sets the custom color of the marker
+
+  //draws new marker on the map
   addMarkers = () => {
     const LatLngBounds = new this.props.google.maps.LatLngBounds()
 
@@ -56,16 +59,13 @@ class Map extends Component {
         id: location.id,
       })
 
-
-      // this.markers.push(marker); //I tried to put it in state, but redux extention would freeze whenever i tried to search for index in populateInfoWindow() function
-
       marker.addListener('click', () => {
 
         this.populateInfoWindow(marker, this.infoWindow);
-        // console.log('im clicking on ', marker.id)
         this.props.openInfoWindow(marker.id)
 
       })
+      //adds markers to the state
       this.props.addMarkers(marker) //this came from redux reducer
       LatLngBounds.extend(marker.position)
     })
@@ -73,21 +73,13 @@ class Map extends Component {
   }
 
   populateInfoWindow = (marker, infowindow) => {
-
     if (infowindow.marker !== marker) {
       // resets the old marker
       if (infowindow.marker) {
-
         const index = this.props.markers.findIndex(m => m.id === this.props.infoWindow)
-
         this.props.markers[index].setIcon(marker.getIcon())
-
-        //uncomment line 70 first to use this approach, and comment the line 61
-        // const index = this.props.markers.findIndex(m => m.id === infowindow.marker.id)
-        // this.props.markers[index].setIcon(marker.getIcon())
-
       }
-
+      // sets new marker's icon and content
       marker.setIcon(this.chosenIcon)
       infowindow.marker = marker
       infowindow.setContent(`
@@ -102,7 +94,6 @@ class Map extends Component {
       const infoWindow = this.props.openInfoWindow;
       // Clears the old info window
       infowindow.addListener('closeclick', function () {
-
         infoWindow('')
         infowindow.marker = null;
         marker.setIcon(this.chosenIcon);
@@ -111,28 +102,22 @@ class Map extends Component {
 
     }
   }
+
   // Opens info window for items from the list 
   onclickLocation = () => {
-
     const infowindow = this.infoWindow
     const openInfoWindow = this.props.openInfoWindow;
-
     const displayInfowindow = (e) => {
-
-      // const markers = this.props.markers
       const markerInd =
         this.props.markers.findIndex(m => m.title.toLowerCase() === e.target.innerText.toLowerCase());
 
       if (infowindow.marker) {
         const index = this.props.markers.findIndex(m => m.id === this.props.infoWindow)
         this.props.markers[index].setIcon(this.props.markers[markerInd].getIcon());
-        //  this.markers[index].setVisible(true)
       }
-      // openInfoWindow(this.markers[markerInd].id);
       openInfoWindow(this.props.markers[markerInd].id);
       this.populateInfoWindow(this.props.markers[markerInd], infowindow)
     }
-
 
     document.querySelector('.locations__list').addEventListener('click', function (e) {
       if (e.target && e.target.nodeName === "LI") {
@@ -141,22 +126,21 @@ class Map extends Component {
     })
   }
 
-  // Handles input in react state
+  // Handles input in filter in react state
   handleValueChange = (e) => {
     this.setState({ query: e.target.value })
-
   }
 
+  //handles hamburger menu and sidebar
   showMenu = () => {
     document.querySelector('.nav__menu-icon').classList.toggle('open');
     document.querySelector('.locations').classList.toggle('open');
   }
 
   render() {
-
+    // filteres the visibility of locations
     if (this.props.locations) {
       if (this.state.query) {
-
         this.props.locations.forEach((l, i) => {
 
           if (l.name.toLowerCase().includes(this.state.query.toLowerCase())) {
@@ -177,7 +161,6 @@ class Map extends Component {
       }
     }
 
-
     return (
       <div className="container">
         <nav className="nav">
@@ -189,8 +172,7 @@ class Map extends Component {
               if (e.keyCode === 9) {
                 this.showMenu()
               }
-            }}
-          >
+            }} >
             <span ></span></div>
           <h1 className="nav__title">My neighborhood map</h1>
         </nav>
