@@ -41,7 +41,7 @@ class Map extends Component {
 
   infoWindow = new this.props.google.maps.InfoWindow();
   chosenIcon = this.makeMarkerIcon('0072ff');
- 
+
   addMarkers = () => {
     const LatLngBounds = new this.props.google.maps.LatLngBounds()
 
@@ -119,22 +119,22 @@ class Map extends Component {
 
     const displayInfowindow = (e) => {
 
-     // const markers = this.props.markers
+      // const markers = this.props.markers
       const markerInd =
-      this.props.markers.findIndex(m => m.title.toLowerCase() === e.target.innerText.toLowerCase());
+        this.props.markers.findIndex(m => m.title.toLowerCase() === e.target.innerText.toLowerCase());
 
       if (infowindow.marker) {
         const index = this.props.markers.findIndex(m => m.id === this.props.infoWindow)
         this.props.markers[index].setIcon(this.props.markers[markerInd].getIcon());
         //  this.markers[index].setVisible(true)
       }
-     // openInfoWindow(this.markers[markerInd].id);
+      // openInfoWindow(this.markers[markerInd].id);
       openInfoWindow(this.props.markers[markerInd].id);
       this.populateInfoWindow(this.props.markers[markerInd], infowindow)
     }
 
 
-    document.querySelector('.locations').addEventListener('click', function (e) {
+    document.querySelector('.locations__list').addEventListener('click', function (e) {
       if (e.target && e.target.nodeName === "LI") {
         displayInfowindow(e)
       }
@@ -144,18 +144,19 @@ class Map extends Component {
   // Handles input in react state
   handleValueChange = (e) => {
     this.setState({ query: e.target.value })
-    
+
   }
 
   showMenu = () => {
     document.querySelector('.nav__menu-icon').classList.toggle('open');
+    document.querySelector('.locations').classList.toggle('open');
   }
 
   render() {
 
     if (this.props.locations) {
       if (this.state.query) {
- 
+
         this.props.locations.forEach((l, i) => {
 
           if (l.name.toLowerCase().includes(this.state.query.toLowerCase())) {
@@ -178,18 +179,29 @@ class Map extends Component {
 
 
     return (
-      <div>
+      <div className="container">
         <nav className="nav">
-          <div className="nav__menu-icon" onClick={() => this.showMenu()}><span></span></div>
+          <div className="nav__menu-icon"
+            aria-label="list of locations"
+            tabIndex="0"
+            onClick={() => this.showMenu()}
+            onKeyDown={(e) => {
+              if (e.keyCode === 9) {
+                this.showMenu()
+              }
+            }}
+          >
+            <span ></span></div>
           <h1 className="nav__title">My neighborhood map</h1>
         </nav>
 
-        <div>
-          <input type="text" value={this.state.query} onChange={this.handleValueChange} placeholder="Filter"/>
-          <ul className="locations">
-            {this.props.markers.length > 0 &&
-              this.props.markers.filter(m => m.getVisible()).map((m, i) =>
-                (<li key={i}>{m.title}</li>))
+        <div className="locations">
+          <input role="search" className="locations__filter" type="text" value={this.state.query} onChange={this.handleValueChange} placeholder="Filter" />
+          <ul className="locations__list">
+            {this.props.markers.length > 0 ?
+              this.props.markers.filter(m => m.getVisible()).map((m) =>
+                (<li tabIndex="0" className="locations__item" key={m.id}>{m.title}</li>)) :
+              <div tabIndex="0" className="locations__item">Couldn't load the locations</div>
             }
           </ul>
         </div>

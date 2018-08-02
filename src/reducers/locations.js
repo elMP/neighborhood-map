@@ -46,10 +46,8 @@ export function markers(state = [], action) {
 }
 
 export function infoWindow(state = '', action) {
-  //  console.log(state)
     switch (action.type) {
         case OPEN_INFO_WINDOW:
-      //      console.log('reducer gets: ', action.infoId)
             return action.infoId;
         default:
             return state;
