@@ -1,5 +1,6 @@
 # My neighborhood map
 _A single page application featuring a map of my neighborhood._
+To view the application online, go to https://kasyanovamg.github.io/neighborhood-map/
 
 #### API used:
 * Google maps
